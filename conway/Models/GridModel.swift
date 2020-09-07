@@ -16,15 +16,21 @@ class GridModel: NSObject {
         super.init()
     }
 
-    func nextGeneration() -> [[Bool]] {
+    func nextGeneration() -> GridModel {
         var newGrid = [[Bool]]()
-        for row in 1...grid.count {
-            for col in 1...grid[row].count {
+        for item in grid {
+            newGrid.append(Array(repeating: false, count: item.count))
+        }
+
+        for row in 1...grid.count - 1 {
+            for col in 1...grid[row].count - 1 {
                 var aliveNeighbours = 0
                 for i in -1...1 {
                     for j in -1...1 {
-                        if grid[row + i][col + j] {
-                            aliveNeighbours += 1
+                        if (row + i) < grid.count && (col + j) < grid[row].count {
+                            if grid[row + i][col + j] {
+                                aliveNeighbours += 1
+                            }
                         }
                     }
                 }
@@ -45,6 +51,6 @@ class GridModel: NSObject {
             }
         }
 
-        return newGrid
+        return GridModel(grid: newGrid)
     }
 }
