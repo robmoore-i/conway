@@ -91,18 +91,3 @@ class HouseNumber {
     }
 }
 
-//class Box: 'rectangleLike' {
-//
-//    const x:Int
-//    const y:Int
-//
-//    override init(x:Int, y:Int, alive:Bool) {
-//
-//    }
-//
-//
-//    override func draw(_ rect: CGRect) {
-//        //draw the fixed rectangle in a
-//    }
-//}
-//
