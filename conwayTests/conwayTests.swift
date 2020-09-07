@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import conway
+//@testable import conway
 
 class conwayTests: XCTestCase {
 
