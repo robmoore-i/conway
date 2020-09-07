@@ -30,8 +30,6 @@ class ViewController: UIViewController {
 }
 
 class Draw: UIView {
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -42,11 +40,46 @@ class Draw: UIView {
     
     override func draw(_ rect: CGRect) {
         // Draw all our stuff
-        
-        for i in 0...20 {
-            for j in 0...20 {
-                let isAlive = (i+j) % 5 == 0
-                Cell(HouseNumber(i, j), isAlive).draw(frame)
+        let matrix = CellMatrix(frame)
+        matrix.draw()
+        do {
+            sleep(1)
+        }
+        matrix.next()
+        matrix.draw()
+        do {
+            sleep(1)
+        }
+        matrix.next()
+        matrix.draw()
+    }
+}
+
+class CellMatrix {
+    let frame: CGRect
+    var gridModel:GridModel
+    
+    init(_ frame: CGRect) {
+        var grid = [[Bool]](repeating: [Bool](repeating: false, count: 20), count: 20)
+        for i in 0...19 {
+            for j in 0...19 {
+                grid[i][j] =  (i+j) % 5 == 0
+            }
+        }
+        self.gridModel = GridModel(grid: grid)
+        self.frame = frame
+    }
+    
+    func next() {
+        gridModel = GridModel(grid: gridModel.nextGeneration())
+    }
+    
+    func draw() {
+        for i in 0...(gridModel.grid.count - 1) {
+            for j in 0...(gridModel.grid.count - 1) {
+                let house = HouseNumber(i,j)
+                let cell = Cell(house, gridModel.grid[i][j])
+                cell.draw(frame)
             }
         }
     }
