@@ -30,8 +30,16 @@ class ViewController: UIViewController {
 }
 
 class Draw: UIView {
+    var matrix:CellMatrix?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.matrix = CellMatrix(frame)
+        Timer.scheduledTimer(withTimeInterval: 1.0,
+            repeats: true,
+            block: { (timer) in
+               self.setNeedsDisplay()
+            })
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,19 +48,12 @@ class Draw: UIView {
     
     override func draw(_ rect: CGRect) {
         // Draw all our stuff
-        let matrix = CellMatrix(frame)
-        matrix.draw()
-        do {
-            sleep(1)
-        }
-        matrix.next()
-        matrix.draw()
-        do {
-            sleep(1)
-        }
-        matrix.next()
-        matrix.draw()
+        
+        matrix?.draw()
+        matrix?.next()
+       
     }
+ 
 }
 
 class CellMatrix {
@@ -71,7 +72,7 @@ class CellMatrix {
     }
     
     func next() {
-        gridModel = GridModel(grid: gridModel.nextGeneration())
+        gridModel = gridModel.nextGeneration()
     }
     
     func draw() {
