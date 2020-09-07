@@ -30,8 +30,6 @@ class ViewController: UIViewController {
 }
 
 class Draw: UIView {
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -42,8 +40,48 @@ class Draw: UIView {
     
     override func draw(_ rect: CGRect) {
         // Draw all our stuff
-        Cell(HouseNumber(0, 0), true).draw(frame)
-        Cell(HouseNumber(1, 1), false).draw(frame)
+        let matrix = CellMatrix(frame)
+        matrix.draw()
+        do {
+            sleep(1)
+        }
+        matrix.next()
+        matrix.draw()
+        do {
+            sleep(1)
+        }
+        matrix.next()
+        matrix.draw()
+    }
+}
+
+class CellMatrix {
+    let frame: CGRect
+    var gridModel:GridModel
+    
+    init(_ frame: CGRect) {
+        var grid = [[Bool]](repeating: [Bool](repeating: false, count: 20), count: 20)
+        for i in 0...19 {
+            for j in 0...19 {
+                grid[i][j] =  (i+j) % 5 == 0
+            }
+        }
+        self.gridModel = GridModel(grid: grid)
+        self.frame = frame
+    }
+    
+    func next() {
+        gridModel = GridModel(grid: gridModel.nextGeneration())
+    }
+    
+    func draw() {
+        for i in 0...(gridModel.grid.count - 1) {
+            for j in 0...(gridModel.grid.count - 1) {
+                let house = HouseNumber(i,j)
+                let cell = Cell(house, gridModel.grid[i][j])
+                cell.draw(frame)
+            }
+        }
     }
 }
 
@@ -61,7 +99,7 @@ class Cell {
     
     func draw(_ frame: CGRect) {
         let sideLength = frame.width
-        let firstGrayBox = CGRect(x: houseNumber.xCoordinate(sideLength), y: houseNumber.yCoordinate(sideLength), width: frame.width / 20, height: frame.width / 20)
+        let firstGrayBox = CGRect(x: houseNumber.xCoordinate(sideLength), y: houseNumber.yCoordinate(sideLength), width: frame.width / 25, height: frame.width / 25)
         let firstGrayBoxBezierPath: UIBezierPath = UIBezierPath(rect: firstGrayBox)
         if (isAlive) {
           alive.set()
@@ -77,17 +115,17 @@ class HouseNumber {
     let x: CGFloat
     let y: CGFloat
     
-    init(_ x: CGFloat, _ y: CGFloat) {
-        self.x = x
-        self.y = y
+    init(_ x: Int, _ y: Int) {
+        self.x = CGFloat(integerLiteral: x)
+        self.y = CGFloat(integerLiteral: y)
     }
     
     func xCoordinate(_ sideLength: CGFloat) -> CGFloat {
-        return 1 + x + (x * (sideLength / 20))
+        return 1 + x*2 + (x * (sideLength / 25))
     }
     
     func yCoordinate(_ sideLength: CGFloat) -> CGFloat {
-        return 1 + y + (y * (sideLength / 20))
+        return 1 + y*2 + (y * (sideLength / 25))
     }
 }
 
