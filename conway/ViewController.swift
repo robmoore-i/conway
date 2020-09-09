@@ -12,15 +12,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     
-        let k = Draw(frame: CGRect(
-          origin: CGPoint(x: 0, y: 100),
-          size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 100)))
-        
         // Add the view to the view hierarchy so that it shows up on screen
-        self.view.addSubview(k)
-
+        self.view.addSubview(
+            CellMatrixCanvas(frame: CGRect(
+              origin: CGPoint(x: 0, y: 100),
+              size: CGSize(
+                width: UIScreen.main.bounds.width,
+                height: UIScreen.main.bounds.height - 100))))
     }
     
     override func didReceiveMemoryWarning() {
@@ -29,8 +28,8 @@ class ViewController: UIViewController {
     }
 }
 
-class Draw: UIView {
-    var matrix:CellMatrix?
+class CellMatrixCanvas: UIView {
+    var matrix: CellMatrix?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -91,8 +90,8 @@ class CellMatrix {
 }
 
 class Cell {
-    let alive:UIColor = UIColor.white
-    let dead:UIColor = UIColor.gray
+    let alive: UIColor = UIColor.white
+    let dead: UIColor = UIColor.gray
     
     let houseNumber: HouseNumber
     let isAlive: Bool
@@ -133,4 +132,3 @@ class HouseNumber {
         return 1 + y*2 + (y * (sideLength / 25))
     }
 }
-
