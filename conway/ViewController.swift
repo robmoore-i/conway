@@ -47,13 +47,9 @@ class Draw: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        // Draw all our stuff
-        
         matrix?.draw()
         matrix?.next()
-       
     }
- 
 }
 
 class CellMatrix {
@@ -62,9 +58,17 @@ class CellMatrix {
     
     init(_ frame: CGRect) {
         var grid = [[Bool]](repeating: [Bool](repeating: false, count: 20), count: 20)
-        for i in 0...19 {
-            for j in 0...19 {
-                grid[i][j] =  (i+j) % 5 == 0
+        for x in 0...19 {
+            for y in 0...19 {
+                if (
+                    x == 10 && y == 10 ||
+                    x == 11 && y == 10 ||
+                    x == 9 && y == 11 ||
+                    x == 10 && y == 11 ||
+                    x == 10 && y == 12
+                ) {
+                    grid[x][y]  = true
+                }
             }
         }
         self.gridModel = GridModel(grid: grid)
